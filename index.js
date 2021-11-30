@@ -111,16 +111,12 @@ const displayWeatherInfo = (weatherObj) => {
 
   // current temperature
   const temp = document.createElement('p')
-  temp.textContent = "Current: " +
-    weatherObj.actualTemp +
-    "° F"
+  temp.textContent = `Current: ${weatherObj.actualTemp}° F`
   weatherContainer.appendChild(temp)
 
   // "feels like" temperature
-  const feelsLikeTemp = document.createElement('p')
-  feelsLikeTemp.textContent = "Feels like: " +
-    weatherObj.feelsLikeTemp +
-    "° F"
+  var feelsLikeTemp = document.createElement('p')
+  feelsLikeTemp.textContent = `Feels like: ${weatherObj.feelsLikeTemp}° F`
   weatherContainer.appendChild(feelsLikeTemp)
 
   addBreak()
@@ -137,3 +133,4 @@ const displayWeatherInfo = (weatherObj) => {
     )
   weatherContainer.appendChild(updatedAt)
 }
+
