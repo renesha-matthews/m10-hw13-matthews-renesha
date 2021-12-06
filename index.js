@@ -38,103 +38,99 @@ async function getWeather(query) {
     
     // location not found, throw error/reject promise
     if (data.cod === "404") throw new Error('location not found')
-    // create weather icon URL
-    // const iconUrl = 'https://openweathermap.org/img/wn/' + data.weather[0].icon + '@2x.png'
-    // const description = data.weather[0].description
-    // const actualTemp = data.main.temp
-    // const feelsLikeTemp = data.main.feels_like
-    // const place = data.name + ", " + data.sys.country
-    // create JS date object from Unix timestamp
-    // const updatedAt = new Date(data.dt * 1000)
+    
      // this object is used by displayWeatherInfo to update the HTML
-      const weatherData = {
-        coords: data.coord.lat + ',' + data.coord.lon,
-        description: data.weather[0].description,
-        iconUrl: 'https://openweathermap.org/img/wn/' + data.weather[0].icon + '@2x.png',
-        actualTemp: data.main.temp,
-        feelsLikeTemp: data.main.feels_like,
-        place: data.name + ", " + data.sys.country,
-        updatedAt: new Date(data.dt * 1000)
-      } 
-      
-      const { coords, description, iconURL, actualTemp, feelsLikeTemp, place, updatedAt } = weatherData
-
-      return weatherData
-
-  } catch(err) {
+     const weatherData = {
+       coords: data.coord.lat + ',' + data.coord.lon,
+       description: data.weather[0].description,
+       // create weather icon URL
+       iconUrl: 'https://openweathermap.org/img/wn/' + data.weather[0].icon + '@2x.png',
+       actualTemp: data.main.temp,
+       feelsLikeTemp: data.main.feels_like,
+       place: data.name + ", " + data.sys.country,
+       // create JS date object from Unix timestamp
+       updatedAt: new Date(data.dt * 1000)
+     }  
+     
+     return weatherData  
+     
+    } catch(err) {
       console.log(err)
+    }
   }
-}
-
-// show error message when location isn't found
-const displayLocNotFound = () => {
-  // clears any previous weather info
-  weatherContainer.innerHTML = "";
-  // create h2, add error msg, and add to page
-  const errMsg = document.createElement('h2')
-  errMsg.textContent = "Location not found"
-  weatherContainer.appendChild(errMsg)
-}
-
-// updates HTML to display weather info
-const displayWeatherInfo = () => {
-  // clears any previous weather info
-  weatherContainer.innerHTML = "";
-
-  // inserts a linebreak <br> to weather section tag
-  const addBreak = () => {
-    weatherContainer.appendChild(
-      document.createElement('br')
-    )
+  
+  // show error message when location isn't found
+  const displayLocNotFound = () => {
+    // clears any previous weather info
+    weatherContainer.innerHTML = "";
+    // create h2, add error msg, and add to page
+    const errMsg = document.createElement('h2')
+    errMsg.textContent = "Location not found"
+    weatherContainer.appendChild(errMsg)
   }
+  
+  
+  // updates HTML to display weather info
+  const displayWeatherInfo = (weatherObj) => {
+    // clears any previous weather info
+    weatherContainer.innerHTML = "";
+    
+    const { coords, description, iconUrl, actualTemp, feelsLikeTemp, place, updatedAt } = weatherObj
 
-  // weather location element
-  const placeName = document.createElement('h2')
-  placeName.textContent = place
-  weatherContainer.appendChild(placeName)
-
-  // map link element based on lat/long
-  const whereLink = document.createElement('a')
-  whereLink.textContent = "Click to view map"
-  whereLink.href = "https://www.google.com/maps/search/?api=1&query=" + coords
-  whereLink.target = "__BLANK"
-  weatherContainer.appendChild(whereLink)
-
-  // weather icon img
-  const icon = document.createElement('img')
-  icon.src = iconUrl
-  weatherContainer.appendChild(icon)
-
-  // weather description
-  const weatherDescription = document.createElement('p')
-  weatherDescription.textContent = description
-  weatherDescription.style.textTransform = 'capitalize'
-  weatherContainer.appendChild(weatherDescription)
-
-  addBreak()
-
-  // current temperature
-  const temp = document.createElement('p')
-  temp.textContent = `Current: ${actualTemp}° F`
-  weatherContainer.appendChild(temp)
-
-  // "feels like" temperature
-  const feelsLike = document.createElement('p')
-  feelsLike.textContent = `Feels like: ${feelsLikeTemp}° F`
-  weatherContainer.appendChild(feelsLike)
-
-  addBreak()
-
-  // time weather was last updated
-  const update = document.createElement('p')
-  update.textContent = "Last updated: " +
-    updatedAt.toLocaleTimeString(
-      'en-US',
-      {
-        hour: 'numeric',
-        minute: '2-digit'
+    // inserts a linebreak <br> to weather section tag
+    const addBreak = () => {
+      weatherContainer.appendChild(
+        document.createElement('br')
+        )           
       }
-    )
-  weatherContainer.appendChild(update)
+          
+    // weather location element
+    const placeName = document.createElement('h2')
+    placeName.textContent = place
+    weatherContainer.appendChild(placeName)
+
+    // map link element based on lat/long
+    const whereLink = document.createElement('a')
+    whereLink.textContent = "Click to view map"
+    whereLink.href = "https://www.google.com/maps/search/?api=1&query=" + coords
+    whereLink.target = "__BLANK"
+    weatherContainer.appendChild(whereLink)
+
+    // weather icon img
+    const icon = document.createElement('img')
+    icon.src = iconUrl
+    weatherContainer.appendChild(icon)
+
+    // weather description
+    const weatherDescription = document.createElement('p')
+    weatherDescription.textContent = description
+    weatherDescription.style.textTransform = 'capitalize'
+    weatherContainer.appendChild(weatherDescription)
+
+    addBreak()
+
+    // current temperature
+    const temp = document.createElement('p')
+    temp.textContent = `Current: ${actualTemp}° F`
+    weatherContainer.appendChild(temp)
+
+    // "feels like" temperature
+    const feelsLike = document.createElement('p')
+    feelsLike.textContent = `Feels like: ${feelsLikeTemp}° F`
+    weatherContainer.appendChild(feelsLike)
+
+    addBreak()
+
+    // time weather was last updated
+    const update = document.createElement('p')
+    update.textContent = "Last updated: " +
+      updatedAt.toLocaleTimeString(
+        'en-US',
+        {
+          hour: 'numeric',
+          minute: '2-digit'
+        }
+      )
+    weatherContainer.appendChild(update)
 }
 
